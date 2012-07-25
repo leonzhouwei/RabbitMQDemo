@@ -7,19 +7,19 @@ public class AGearIosBuilder {
 	public static void main(String[] argv) throws Exception {
 
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(AGearConfig.QUEUE_SERVER_IP);
+		factory.setHost(AGearConfig.RABBITMQ_SERVER_IP);
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
-		channel.exchangeDeclare(AGearConfig.EXCHANGE_NAME, "direct");
-		String bindKey = AGearConfig.EXCHANGE_QUEUE_BIND_KEY_IOS;
-		channel.queueDeclare(AGearConfig.QUEUE_NAME_IOS, false, false, false, null);
-		channel.queueBind(AGearConfig.QUEUE_NAME_IOS, AGearConfig.EXCHANGE_NAME, bindKey);
+		channel.exchangeDeclare(AGearConfig.RABBITMQ_EXCHANGE_NAME, "direct");
+		String bindKey = AGearConfig.RABBITMQ_EXCHANGE_QUEUE_BIND_KEY_IOS;
+		channel.queueDeclare(AGearConfig.RABBITMQ_QUEUE_NAME_IOS, false, false, false, null);
+		channel.queueBind(AGearConfig.RABBITMQ_QUEUE_NAME_IOS, AGearConfig.RABBITMQ_EXCHANGE_NAME, bindKey);
 
 		System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
 		QueueingConsumer consumer = new QueueingConsumer(channel);
-		channel.basicConsume(AGearConfig.QUEUE_NAME_IOS, true, consumer);
+		channel.basicConsume(AGearConfig.RABBITMQ_QUEUE_NAME_IOS, true, consumer);
 
 		while (true) {
 			QueueingConsumer.Delivery delivery = consumer.nextDelivery();

@@ -11,18 +11,18 @@ public class AGearSender {
 //		}
 
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(AGearConfig.QUEUE_SERVER_IP);
+		factory.setHost(AGearConfig.RABBITMQ_SERVER_IP);
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
-		channel.exchangeDeclare(AGearConfig.EXCHANGE_NAME, "direct");
+		channel.exchangeDeclare(AGearConfig.RABBITMQ_EXCHANGE_NAME, "direct");
 
 //		String bindKey = getBindKey(argv);
-		String bindKey = AGearConfig.EXCHANGE_QUEUE_BIND_KEY_IOS;
+		String bindKey = AGearConfig.RABBITMQ_EXCHANGE_QUEUE_BIND_KEY_IOS;
 //		String message = getMessage(argv, AGearConfig.QUEUE_MSG_DELIMITER);
 		String message = "AGearSender";
 		
-		channel.basicPublish(AGearConfig.EXCHANGE_NAME, bindKey, null,
+		channel.basicPublish(AGearConfig.RABBITMQ_EXCHANGE_NAME, bindKey, null,
 				message.getBytes());
 		System.out.println(" [x] Sent '" + bindKey + "':'" + message + "'");
 
